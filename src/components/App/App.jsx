@@ -1,17 +1,31 @@
-import { useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchContacts } from 'redux/operations';
+import {
+  getContacts,
+  getError,
+  getFilter,
+  getIsLoading,
+} from 'redux/selectors';
 import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
 import { Container, Message, Title1, Title2, Wrapper } from './App.styled';
 
 export const App = () => {
+  const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
+  const loading = useSelector(getIsLoading);
+  const error = useSelector(getError);
 
   const filteredContacts = contacts.filter(({ name }) =>
     name.toLowerCase().includes(filter.toLowerCase())
   );
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <Container>
@@ -19,6 +33,8 @@ export const App = () => {
       <ContactForm />
       <Title2>Contacts</Title2>
       <Wrapper>
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
         {contacts.length > 0 ? (
           <>
             <Filter />
