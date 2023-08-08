@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/operations';
 import {
-  getContacts,
-  getError,
-  getFilter,
-  getIsLoading,
+  selectError,
+  selectIsLoading,
+  selectVisibleContacts,
 } from 'redux/selectors';
 import { ContactForm } from '../ContactForm/ContactForm';
 import { ContactList } from '../ContactList/ContactList';
@@ -14,14 +13,9 @@ import { Container, Message, Title1, Title2, Wrapper } from './App.styled';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
-  const loading = useSelector(getIsLoading);
-  const error = useSelector(getError);
-
-  const filteredContacts = contacts.filter(({ name }) =>
-    name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const contacts = useSelector(selectVisibleContacts);
+  const loading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -38,7 +32,7 @@ export const App = () => {
         {contacts.length > 0 ? (
           <>
             <Filter />
-            {filteredContacts.length > 0 ? (
+            {contacts.length > 0 ? (
               <ContactList />
             ) : (
               <Message>
@@ -47,7 +41,7 @@ export const App = () => {
             )}
           </>
         ) : (
-          <Message>You don't have any contacts yet</Message>
+          <Message>You don't have any contacts</Message>
         )}
       </Wrapper>
     </Container>
