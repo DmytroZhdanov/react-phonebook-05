@@ -9,7 +9,7 @@ export const ContactForm = () => {
   const contacts = useSelector(selectContacts);
 
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -19,8 +19,8 @@ export const ContactForm = () => {
         setName(value);
         break;
 
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
 
       default:
@@ -31,7 +31,7 @@ export const ContactForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const newContact = { name, number };
+    const newContact = { name, phone };
     const matchedContact = contacts.find(
       ({ name }) => name.toLowerCase() === newContact.name.toLowerCase()
     );
@@ -47,7 +47,7 @@ export const ContactForm = () => {
 
   const reset = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -63,16 +63,16 @@ export const ContactForm = () => {
         onChange={handleChange}
         value={name}
       />
-      <Label htmlFor="input-number">Number</Label>
+      <Label htmlFor="input-phone">Phone</Label>
       <Input
         type="tel"
-        name="number"
-        id="input-number"
+        name="phone"
+        id="input-phone"
         pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
         onChange={handleChange}
-        value={number}
+        value={phone}
       />
       <AddButton type="submit">Add contact</AddButton>
     </Form>

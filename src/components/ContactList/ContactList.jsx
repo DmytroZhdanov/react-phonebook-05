@@ -7,8 +7,8 @@ export const ContactList = () => {
 
   return (
     <ul>
-      {contacts.map(({ name, number, id }) => {
-        return <Contact key={id} id={id} name={name} number={number} />;
+      {contacts.map(({ name, phone, id }) => {
+        return <Contact key={id} id={id} name={name} phone={phone} />;
       })}
     </ul>
   );
