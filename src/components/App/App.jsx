@@ -1,7 +1,9 @@
+import Loader from 'components/Loader/Loader';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/operations';
 import {
+  selectContacts,
   selectError,
   selectIsLoading,
   selectVisibleContacts,
@@ -13,9 +15,10 @@ import { Container, Message, Title1, Title2, Wrapper } from './App.styled';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectVisibleContacts);
+  const contacts = useSelector(selectContacts);
   const loading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
+  const visibleContacts = useSelector(selectVisibleContacts);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -27,12 +30,12 @@ export const App = () => {
       <ContactForm />
       <Title2>Contacts</Title2>
       <Wrapper>
-        {loading && <p>Loading...</p>}
+        {loading && <Loader/>}
         {error && <p>{error}</p>}
         {contacts.length > 0 ? (
           <>
             <Filter />
-            {contacts.length > 0 ? (
+            {visibleContacts.length > 0 ? (
               <ContactList />
             ) : (
               <Message>
